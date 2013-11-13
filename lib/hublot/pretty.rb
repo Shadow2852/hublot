@@ -15,21 +15,27 @@ module Hublot
       "Saturday" => 6,
       "Sunday" => 7
     }
-
-    return just_now     if just_now?
-    return a_second_ago if a_second_ago?
-    return seconds_ago  if seconds_ago?
-    return a_minute_ago if a_minute_ago?
-    return minutes_ago  if minutes_ago?
-    return an_hour_ago  if an_hour_ago?
-    return today        if is_today?
-    return yesterday    if is_yesterday?
-    return this_week    if this_week?
-    return last_week    if last_week?
-    return datetimefiesta
+    trim {
+      return just_now     if just_now?
+      return a_second_ago if a_second_ago?
+      return seconds_ago  if seconds_ago?
+      return a_minute_ago if a_minute_ago?
+      return minutes_ago  if minutes_ago?
+      return an_hour_ago  if an_hour_ago?
+      return today        if is_today?
+      return yesterday    if is_yesterday?
+      return this_week    if this_week?
+      return last_week    if last_week?
+      return datetimefiesta
+    }
   end
 
 private
+  def trim(&block)
+    sentence = block.call
+    sentence.gsub(/\s{2,}/, ' ')
+  end
+
   def just_now
     'just now'
   end
@@ -79,7 +85,7 @@ private
   end
 
   def today
-    "Today at#{timeify}"
+    "Today at #{timeify}"
   end
 
   def timeify
@@ -91,7 +97,7 @@ private
   end
 
   def yesterday
-    "Yesterday at#{timeify}"
+    "Yesterday at #{timeify}"
   end
 
   def is_yesterday?
@@ -99,7 +105,7 @@ private
   end
 
   def this_week
-    "#{@created} at#{timeify}"
+    "#{@created} at #{timeify}"
   end
 
   def this_week?
@@ -107,7 +113,7 @@ private
   end
 
   def last_week
-    "Last #{@created} at#{timeify}"
+    "Last #{@created} at #{timeify}"
   end
 
   def last_week?
